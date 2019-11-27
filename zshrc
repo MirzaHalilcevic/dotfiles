@@ -111,11 +111,12 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias lc='colorls -l --sd'
 alias swapreset="sudo swapoff -a && sudo swapon -a"
 alias config_gen="~/.local/share/nvim/plugged/YCM-Generator/config_gen.py ."
-alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
 alias cubemx="(~/STM32CubeMX/STM32CubeMX &> /dev/null &)"
-alias lc='colorls -l --sd'
+alias eagle="(QT_XCB_GL_INTEGRATION=xcb_egl /opt/eagle-9.5.2/eagle &> /dev/null &)"
+alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
 
 clang_format_dump() {
   clang-format -style=$1 -dump-config > .clang-format
