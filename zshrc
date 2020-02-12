@@ -115,7 +115,6 @@ alias lc='colorls -l --sd'
 alias swapreset="sudo swapoff -a && sudo swapon -a"
 alias config_gen="~/.local/share/nvim/plugged/YCM-Generator/config_gen.py ."
 alias cubemx="(~/STM32CubeMX/STM32CubeMX &> /dev/null &)"
-alias eagle="(QT_XCB_GL_INTEGRATION=xcb_egl /opt/eagle-9.5.2/eagle &> /dev/null &)"
 alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
 
 clang_format_dump() {
@@ -126,7 +125,7 @@ export FZF_DEFAULT_OPTS='--color fg+:-1,bg+:-1'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH
-source $(dirname $(gem which colorls))/tab_complete.sh
+#source $(dirname $(gem which colorls))/tab_complete.sh
 
 export PATH=$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
 

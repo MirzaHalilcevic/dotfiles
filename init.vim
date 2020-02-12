@@ -8,6 +8,12 @@ let ycmconf_path = '~/.ycm_extra_conf.py'
 " Plugins {{{
 call plug#begin(plugged_path)
 
+" Language Server Protocol (LSP) support for vim and neovim
+Plug 'autozimu/LanguageClient-neovim', {
+  \ 'branch': 'next',
+  \ 'do': 'bash install.sh',
+  \ }
+
 " A code-completion engine for Vim
 Plug 'Valloric/YouCompleteMe'
 Plug 'Valloric/ListToggle'
@@ -108,7 +114,7 @@ let g:UltiSnipsExpandTrigger = '<c-j>' " ctrl + j -> expands snippet
 " indentLine
 let g:indentLine_char = ''
 let g:indentLine_first_char = ''
-let g:indentLine_setColors = 0
+let g:indentLine_setColors = 1
 
 " airline
 let g:airline_theme = 'one'
