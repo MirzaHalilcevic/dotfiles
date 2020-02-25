@@ -111,21 +111,27 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias lc='colorls -l --sd'
+alias lc="colorls -l --sd"
 alias swapreset="sudo swapoff -a && sudo swapon -a"
-alias config_gen="~/.local/share/nvim/plugged/YCM-Generator/config_gen.py ."
 alias cubemx="(~/STM32CubeMX/STM32CubeMX &> /dev/null &)"
 alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
+alias matlab="sudo /usr/local/MATLAB/R2018a/bin/matlab"
 
 clang_format_dump() {
   clang-format -style=$1 -dump-config > .clang-format
 }
 
-export FZF_DEFAULT_OPTS='--color fg+:-1,bg+:-1'
+export FZF_DEFAULT_OPTS="--prompt=' '"
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
+  --color=dark
+  --color=fg:-1,bg:-1,hl:#c678dd,fg+:-1,bg+:-1,hl+:#d858fe
+  --color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
+"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH
-#source $(dirname $(gem which colorls))/tab_complete.sh
+export PATH=$HOME/.gem/ruby/2.7.0/bin:$PATH
+source $(dirname $(gem which colorls))/tab_complete.sh
 
 export PATH=$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
 
