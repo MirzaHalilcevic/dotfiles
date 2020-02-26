@@ -20,12 +20,12 @@
 'builtin' 'setopt' 'no_aliases' 'no_sh_glob' 'brace_expand'
 
 () {
-  emulate -L zsh
-  setopt no_unset extended_glob
-  zmodload zsh/langinfo
-  if [[ ${langinfo[CODESET]:-} != (utf|UTF)(-|)8 ]]; then
-    local LC_ALL=${${(@M)$(locale -a):#*.(utf|UTF)(-|)8}[1]:-en_US.UTF-8}
-  fi
+emulate -L zsh
+setopt no_unset extended_glob
+zmodload zsh/langinfo
+if [[ ${langinfo[CODESET]:-} != (utf|UTF)(-|)8 ]]; then
+  local LC_ALL=${${(@M)$(locale -a):#*.(utf|UTF)(-|)8}[1]:-en_US.UTF-8}
+fi
 
   # Unset all configuration options. This allows you to apply configiguration changes without
   # restarting zsh. Edit ~/.p10k.zsh and type `source ~/.p10k.zsh`.
@@ -33,57 +33,57 @@
 
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-      # =========================[ Line #1 ]=========================
-      os_icon                 # os identifier
-      dir                     # current directory
-      vcs                     # git status
-      # =========================[ Line #2 ]=========================
-      newline
-      prompt_char             # prompt symbol
-  )
+  # =========================[ Line #1 ]=========================
+  os_icon                 # os identifier
+  dir                     # current directory
+  vcs                     # git status
+  # =========================[ Line #2 ]=========================
+  newline
+  prompt_char             # prompt symbol
+)
 
   # The list of segments shown on the right. Fill it with less important segments.
   # Right prompt on the last prompt line (where you are typing your commands) gets
   # automatically hidden when the input line reaches it. Right prompt above the
   # last prompt line gets hidden if it would overlap with left prompt.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-      # =========================[ Line #1 ]=========================
-      status                  # exit code of the last command
-      command_execution_time  # duration of the last command
-      background_jobs         # presence of background jobs
-      direnv                  # direnv status (https://direnv.net/)
-      virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
-      anaconda                # conda environment (https://conda.io/)
-      pyenv                   # python environment (https://github.com/pyenv/pyenv)
-      nodenv                  # node.js version from nodenv (https://github.com/nodenv/nodenv)
-      nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)
-      nodeenv                 # node.js environment (https://github.com/ekalinin/nodeenv)
-      # node_version          # node.js version
-      # go_version            # go version (https://golang.org)
-      # rust_version          # rustc version (https://www.rust-lang.org)
-      # dotnet_version        # .NET version (https://dotnet.microsoft.com)
-      rbenv                   # ruby version from rbenv (https://github.com/rbenv/rbenv)
-      rvm                     # ruby version from rvm (https://rvm.io)
-      kubecontext             # current kubernetes context (https://kubernetes.io/)
-      terraform               # terraform workspace (https://www.terraform.io)
-      aws                     # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
-      # aws_eb_env            # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstalk/)
-      # azure                 # azure account name (https://docs.microsoft.com/en-us/cli/azure)
-      context                 # user@hostname
-      nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
-      ranger                  # ranger shell (https://github.com/ranger/ranger)
-      vi_mode                 # vi mode (you don't need this if you've enabled prompt_char)
-      # vpn_ip                # virtual private network indicator
-      # ram                   # free RAM
-      # load                  # CPU load
-      time                    # current time
-      # =========================[ Line #2 ]=========================
-      newline
-      # public_ip             # public IP address
-      # proxy                 # system-wide http/https/ftp proxy
-      # battery               # internal battery
-      # example               # example user-defined segment (see prompt_example function below)
-  )
+  # =========================[ Line #1 ]=========================
+  status                  # exit code of the last command
+  command_execution_time  # duration of the last command
+  background_jobs         # presence of background jobs
+  # direnv                # direnv status (https://direnv.net/)
+  # virtualenv            # python virtual environment (https://docs.python.org/3/library/venv.html)
+  # anaconda              # conda environment (https://conda.io/)
+  # pyenv                 # python environment (https://github.com/pyenv/pyenv)
+  # nodenv                # node.js version from nodenv (https://github.com/nodenv/nodenv)
+  # nvm                   # node.js version from nvm (https://github.com/nvm-sh/nvm)
+  # nodeenv               # node.js environment (https://github.com/ekalinin/nodeenv)
+  # node_version          # node.js version
+  # go_version            # go version (https://golang.org)
+  # rust_version          # rustc version (https://www.rust-lang.org)
+  # dotnet_version        # .NET version (https://dotnet.microsoft.com)
+  # rbenv                 # ruby version from rbenv (https://github.com/rbenv/rbenv)
+  # rvm                   # ruby version from rvm (https://rvm.io)
+  # kubecontext           # current kubernetes context (https://kubernetes.io/)
+  # terraform             # terraform workspace (https://www.terraform.io)
+  # aws                   # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
+  # aws_eb_env            # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstalk/)
+  # azure                 # azure account name (https://docs.microsoft.com/en-us/cli/azure)
+  context                 # user@hostname
+  # nordvpn               # nordvpn connection status, linux only (https://nordvpn.com/)
+  # ranger                # ranger shell (https://github.com/ranger/ranger)
+  # vi_mode               # vi mode (you don't need this if you've enabled prompt_char)
+  # vpn_ip                # virtual private network indicator
+  # ram                   # free RAM
+  # load                  # CPU load
+  time                    # current time
+  # =========================[ Line #2 ]=========================
+  newline
+  # public_ip             # public IP address
+  # proxy                 # system-wide http/https/ftp proxy
+  # battery               # internal battery
+  # example               # example user-defined segment (see prompt_example function below)
+)
 
   # To disable default icons for all segments, set POWERLEVEL9K_VISUAL_IDENTIFIER_EXPANSION=''.
   #
@@ -242,41 +242,41 @@
   typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
   # Don't shorten directories that contain any of these files. They are anchors.
   local anchor_files=(
-    .bzr
-    .citc
-    .git
-    .hg
-    .node-version
-    .python-version
-    .ruby-version
-    .shorten_folder_marker
-    .svn
-    .terraform
-    CVS
-    Cargo.toml
-    composer.json
-    go.mod
-    package.json
-  )
-  typeset -g POWERLEVEL9K_SHORTEN_FOLDER_MARKER="(${(j:|:)anchor_files})"
-  # Don't shorten this many last directory segments. They are anchors.
-  typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-  # Shorten directory if it's longer than this even if there is space for it. The value can
-  # be either absolute (e.g., '80') or a percentage of terminal width (e.g, '50%'). If empty,
-  # directory will be shortened only when prompt doesn't fit or when other parameters demand it
-  # (see POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS and POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS_PCT below).
-  typeset -g POWERLEVEL9K_DIR_MAX_LENGTH=80
-  # When `dir` segment is on the last prompt line, try to shorten it enough to leave at least this
-  # many columns for typing commands.
-  typeset -g POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS=40
-  # When `dir` segment is on the last prompt line, try to shorten it enough to leave at least
-  # COLUMNS * POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS_PCT * 0.01 columns for typing commands.
-  typeset -g POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS_PCT=50
-  # If set to true, embed a hyperlink into the directory. Useful for quickly
-  # opening a directory in the file manager simply by clicking the link.
-  # Can also be handy when the directory is shortened, as it allows you to see
-  # the full directory that was used in previous commands.
-  typeset -g POWERLEVEL9K_DIR_HYPERLINK=false
+  .bzr
+  .citc
+  .git
+  .hg
+  .node-version
+  .python-version
+  .ruby-version
+  .shorten_folder_marker
+  .svn
+  .terraform
+  CVS
+  Cargo.toml
+  composer.json
+  go.mod
+  package.json
+)
+typeset -g POWERLEVEL9K_SHORTEN_FOLDER_MARKER="(${(j:|:)anchor_files})"
+# Don't shorten this many last directory segments. They are anchors.
+typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+# Shorten directory if it's longer than this even if there is space for it. The value can
+# be either absolute (e.g., '80') or a percentage of terminal width (e.g, '50%'). If empty,
+# directory will be shortened only when prompt doesn't fit or when other parameters demand it
+# (see POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS and POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS_PCT below).
+typeset -g POWERLEVEL9K_DIR_MAX_LENGTH=80
+# When `dir` segment is on the last prompt line, try to shorten it enough to leave at least this
+# many columns for typing commands.
+typeset -g POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS=40
+# When `dir` segment is on the last prompt line, try to shorten it enough to leave at least
+# COLUMNS * POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS_PCT * 0.01 columns for typing commands.
+typeset -g POWERLEVEL9K_DIR_MIN_COMMAND_COLUMNS_PCT=50
+# If set to true, embed a hyperlink into the directory. Useful for quickly
+# opening a directory in the file manager simply by clicking the link.
+# Can also be handy when the directory is shortened, as it allows you to see
+# the full directory that was used in previous commands.
+typeset -g POWERLEVEL9K_DIR_HYPERLINK=false
 
   # Enable special styling for non-writable directories.
   typeset -g POWERLEVEL9K_DIR_SHOW_WRITABLE=true
@@ -412,7 +412,7 @@
 
     typeset -g my_git_format=$res
   }
-  functions -M my_git_formatter 2>/dev/null
+functions -M my_git_formatter 2>/dev/null
 
   # Disable the default Git status formatting.
   typeset -g POWERLEVEL9K_VCS_DISABLE_GITSTATUS_FORMATTING=true
@@ -729,9 +729,9 @@
   #   typeset -g POWERLEVEL9K_KUBECONTEXT_TEST_VISUAL_IDENTIFIER_EXPANSION='⭐'
   #   typeset -g POWERLEVEL9K_KUBECONTEXT_TEST_CONTENT_EXPANSION='> ${P9K_CONTENT} <'
   typeset -g POWERLEVEL9K_KUBECONTEXT_CLASSES=(
-      # '*prod*'  PROD    # These values are examples that are unlikely
-      # '*test*'  TEST    # to match your needs. Customize them as needed.
-      '*'       DEFAULT)
+  # '*prod*'  PROD    # These values are examples that are unlikely
+  # '*test*'  TEST    # to match your needs. Customize them as needed.
+  '*'       DEFAULT)
   typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_FOREGROUND=134
   # typeset -g POWERLEVEL9K_KUBECONTEXT_DEFAULT_VISUAL_IDENTIFIER_EXPANSION='⭐'
 

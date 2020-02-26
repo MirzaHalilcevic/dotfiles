@@ -4,11 +4,19 @@
 " Plugins {{{
 call plug#begin('~/.local/share/nvim/plugged')
 
+" A command-line fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
 " Language Server Protocol (LSP) support for vim and neovim
 Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+      \ 'branch': 'next',
+      \ 'do': 'bash install.sh',
+      \ }
+
+" The ultimate snippet solution for Vim
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 " Dark powered asynchronous completion framework for neovim/Vim8
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -16,23 +24,15 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " Print documents in echo area
 Plug 'Shougo/echodoc'
 
-" Clang based syntax highlighting for Neovim
-Plug 'arakashic/chromatica.nvim'
-
-" A Vim plugin which shows a git diff in the 'gutter' (sign column) and
+" A Vim plugin which shows a git diff in the gutter (sign column) and
 " stages/undoes hunks
 Plug 'airblade/vim-gitgutter'
 
-" A command-line fuzzy finder
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+" Clang based syntax highlighting for Neovim
+Plug 'arakashic/chromatica.nvim'
 
-" A better JSON for Vim: distinct highlighting of keywords vs values,
-" JSON-specific (non-JS) warnings, quote concealing
+" A better JSON for Vim
 Plug 'elzr/vim-json'
-
-" Additional Vim syntax highlighting for C++
-Plug 'octol/vim-cpp-enhanced-highlight'
 
 " Vim syntax highlighting for meson
 Plug 'chadversary/vim-meson'
@@ -40,12 +40,11 @@ Plug 'chadversary/vim-meson'
 " Vim syntax for TOML
 Plug 'cespare/vim-toml'
 
+" Additional Vim syntax highlighting for C++
+Plug 'octol/vim-cpp-enhanced-highlight'
+
 " Provide easy code formatting in Vim by integrating existing code formatters
 Plug 'Chiel92/vim-autoformat'
-
-" The ultimate snippet solution for Vim
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 
 " Asynchronous build and test dispatcher
 Plug 'tpope/vim-dispatch'
@@ -58,6 +57,9 @@ Plug 'tpope/vim-eunuch'
 
 " A Git wrapper so awesome, it should be illegal
 Plug 'tpope/vim-fugitive'
+
+" Easy git merge conflict resolution in Vim
+Plug 'christoomey/vim-conflicted'
 
 " True Sublime Text style multiple selections for Vim
 Plug 'terryma/vim-multiple-cursors'
@@ -92,8 +94,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 " Collection of awesome color schemes for Neo/vim, merged for quick use
 Plug 'rafi/awesome-vim-colorschemes'
 
-" Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim-airline,
-" Powerline, Unite, vim-startify and more
+" Adds file type icons to Vim plugins
 Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
@@ -102,11 +103,14 @@ call plug#end()
 " LanguageClient-neovim
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {
-    \ 'cpp': ['ccls', '--log-file-append=0', '--log-file=/tmp/ccls.log']
-    \ }
+      \ 'cpp': ['ccls', '--log-file-append=0', '--log-file=/tmp/ccls.log']
+      \ }
 
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger = '<c-j>' " ctrl + j -> expand snippet
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
@@ -119,21 +123,27 @@ let g:echodoc#enable_at_startup = 1
 let g:chromatica#libclang_path = '/usr/lib/libclang.so'
 let g:chromatica#highlight_feature_level = 0
 
-" JSON
+" vim-json
 let g:vim_json_syntax_conceal = 0
 
-" UltiSnips
-let g:UltiSnipsExpandTrigger = '<c-j>' " ctrl + j -> expands snippet
+" cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+let g:cpp_no_function_highlight = 1
 
-" Lens
+" lens
 let g:lens#height_resize_max = 0
-let g:lens#width_resize_max = 120
+let g:lens#width_resize_max = 99
 
 " indentLine
 let g:indentLine_char = ''
 let g:indentLine_first_char = ''
 
-" airline
+" vim-airline
 let g:airline_theme = 'one'
 let g:airline_powerline_fonts = 1
 let g:airline_left_sep = ''
@@ -198,39 +208,33 @@ hi fzf3 guifg=#A1A8B5 guibg=#2C323C
 " Use space as leader key
 let mapleader = " "
 
-function SetLSPShortcuts()
+" leader + f -> open fuzzy finder for files
+nnoremap <Leader>f :Files<CR>
 
-  " f5 -> open language client contex menu
-  nnoremap <f5> :call LanguageClient_contextMenu()<CR>
+" leader + F -> open fuzzy finder for text in files
+nnoremap <Leader>F :Find<CR>
 
-  " leader + j -> goto definition
-  nnoremap <leader>j :call LanguageClient#textDocument_definition()<CR>
+" f5 -> open language client contex menu
+nnoremap <f5> :call LanguageClient_contextMenu()<CR>
 
-  " leader + k -> get identifier info
-  nnoremap <leader>k :call LanguageClient#textDocument_hover()<CR>
+" leader + j -> goto definition
+nnoremap <leader>j :call LanguageClient#textDocument_definition()<CR>
 
-  " leader + ; -> show references
-  nnoremap <leader>; :call LanguageClient#textDocument_references()<CR>
+" leader + k -> get identifier info
+nnoremap <leader>k :call LanguageClient#textDocument_hover()<CR>
 
-endfunction()
-
-augroup LSP
-  autocmd!
-  autocmd FileType c,cc,cpp,cxx,h,hh,hpp,hxx call SetLSPShortcuts()
-augroup END
+" leader + ; -> show references
+nnoremap <leader>; :call LanguageClient#textDocument_references()<CR>
 
 " leader + l -> show current list of errors
 nnoremap <leader>l :copen<CR>
 
-" leader + f -> open fuzzy finder for files
-nnoremap <Leader>f :Files<CR>
-
-" tab -> autocompletion
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-
 " escape + tab/backspace -> next/previous buffer
 nnoremap <esc><tab> :bnext<CR>
 nnoremap <esc><bs>  :bprev<CR>
+
+" tab -> autocompletion
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " alt + down/up -> move selected lines down/up
 nnoremap <A-down> :m .+1<CR>==
@@ -242,6 +246,9 @@ vnoremap <A-up>   :m '<-2<CR>gv=gv
 
 " escape -> enter normal mode when in terminal emulator
 tnoremap <Esc> <C-\><C-n>
+" }}}
+" Misc {{{
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 " }}}
 
 " vim:foldmethod=marker

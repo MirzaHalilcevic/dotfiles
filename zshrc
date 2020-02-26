@@ -121,11 +121,11 @@ clang_format_dump() {
   clang-format -style=$1 -dump-config > .clang-format
 }
 
-export FZF_DEFAULT_OPTS="--prompt=' '"
+export FZF_DEFAULT_COMMAND="rg --files --no-ignore --hidden --follow --glob '!.git/*'"
+export FZF_DEFAULT_OPTS="--tac --tiebreak=end --prompt=' '"
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
-  --color=dark
-  --color=fg:-1,bg:-1,hl:#c678dd,fg+:-1,bg+:-1,hl+:#d858fe
-  --color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
+--color=dark,fg:-1,bg:-1,hl:#c678dd,fg+:-1,bg+:-1,hl+:#d858fe
+--color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
 "
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
