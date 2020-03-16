@@ -75,14 +75,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  bgnotify
-  colored-man-pages
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  careful_rm
-)
+plugins=(bgnotify colored-man-pages common-aliases git zsh-autosuggestions zsh-completions zsh-syntax-highlighting careful_rm)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -99,6 +92,7 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='mvim'
 # fi
+export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -111,23 +105,16 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias lc="colorls -l --sd"
-alias swapreset="sudo swapoff -a && sudo swapon -a"
-alias cubemx="(~/STM32CubeMX/STM32CubeMX &> /dev/null &)"
+alias ls="colorls"
+alias empty_swap="sudo swapoff -a; sudo swapon -a"
 alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
 alias matlab="sudo /usr/local/MATLAB/R2018a/bin/matlab"
+alias cubemx="(~/STM32CubeMX/STM32CubeMX &> /dev/null &)"
 
-clang_format_dump() {
-  clang-format -style=$1 -dump-config > .clang-format
-}
+clang_format_dump() { clang-format -style=$1 -dump-config > .clang-format }
 
-export FZF_DEFAULT_COMMAND="rg --files --no-ignore --hidden --follow --glob '!.git/*'"
-export FZF_DEFAULT_OPTS="--tac --tiebreak=end --prompt=' '"
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
---color=dark,fg:-1,bg:-1,hl:#c678dd,fg+:-1,bg+:-1,hl+:#d858fe
---color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
-"
-
+export FZF_DEFAULT_COMMAND="rg --files --no-ignore --hidden --follow --glob '!.git/*' --glob '!build/*'"
+export FZF_DEFAULT_OPTS="--tac --tiebreak=end --color=dark,fg:-1,bg:-1,hl:#c678dd,fg+:-1,bg+:-1,hl+:#d858fe,info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export PATH=$HOME/.gem/ruby/2.7.0/bin:$PATH
