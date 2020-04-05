@@ -1,6 +1,6 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
+# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -9,12 +9,12 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/mirza/.oh-my-zsh"
+export ZSH="/home/mirzah/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
@@ -75,7 +75,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(bgnotify colored-man-pages common-aliases git zsh-autosuggestions zsh-completions zsh-syntax-highlighting careful_rm)
+plugins=(common-aliases bgnotify careful_rm colored-man-pages git zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -92,7 +92,6 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='mvim'
 # fi
-export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -105,20 +104,11 @@ export EDITOR='nvim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ls="colorls"
 alias empty_swap="sudo swapoff -a; sudo swapon -a"
 alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
-alias matlab="sudo /usr/local/MATLAB/R2018a/bin/matlab"
-alias cubemx="(~/STM32CubeMX/STM32CubeMX &> /dev/null &)"
 
-clang_format_dump() { clang-format -style=$1 -dump-config > .clang-format }
-
-export FZF_DEFAULT_COMMAND="rg --files --no-ignore --hidden --follow --glob '!.git/*' --glob '!build/*'"
-export FZF_DEFAULT_OPTS="--tac --tiebreak=end --color=dark,fg:-1,bg:-1,hl:#c678dd,fg+:-1,bg+:-1,hl+:#d858fe,info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-export PATH=$HOME/.gem/ruby/2.7.0/bin:$PATH
-source $(dirname $(gem which colorls))/tab_complete.sh
+export FZF_DEFAULT_OPTS='--color=dark,fg:-1,bg:-1,hl:#c678dd,fg+:#ffffff,bg+:-1,hl+:#d858fe,info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef'
 
 export PATH=$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
 

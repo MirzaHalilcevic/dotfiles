@@ -1,8 +1,15 @@
 " A Neovim configuration by Mirza Halilcevic
-" Note: 'Nerd Fonts' is required for special glyphs
+" NOTE: 'Nerd Fonts' is required for special glyphs
 
 " Plugins {{{
-call plug#begin('~/.local/share/nvim/plugged')
+" Autoinstall vim-plug {{{
+if empty(glob(stdpath('data') . '/site/autoload/plug.vim'))
+  !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
+" }}}
+call plug#begin(stdpath('data') . '/plugged')
 
 " Lean & mean status/tabline for Vim that's light as air
 Plug 'vim-airline/vim-airline'
@@ -12,6 +19,7 @@ Plug 'Chiel92/vim-autoformat'
 
 " IntelliSense engine for Vim8 & Neovim, full language server protocol support
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'antoinemadec/coc-fzf'
 
 " Brings physics-based smooth scrolling to the Vim world
 Plug 'yuttie/comfortable-motion.vim'
@@ -19,17 +27,17 @@ Plug 'yuttie/comfortable-motion.vim'
 " Comment stuff out
 Plug 'tpope/vim-commentary'
 
-" Easy git merge conflict resolution in Vim
-Plug 'christoomey/vim-conflicted'
-
-" Extended Vim syntax highlighting for C and C++
-Plug 'bfrg/vim-cpp-modern'
+" Additional Vim syntax highlighting for C++
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 " Asynchronous build and test dispatcher
 Plug 'tpope/vim-dispatch'
 
 " Helpers for UNIX
 Plug 'tpope/vim-eunuch'
+
+" A Vim plugin for switching between companion source files
+Plug 'derekwyatt/vim-fswitch'
 
 " A Git wrapper so awesome, it should be illegal
 Plug 'tpope/vim-fugitive'
@@ -54,7 +62,7 @@ Plug 'chadversary/vim-meson'
 " True Sublime Text style multiple selections for Vim
 Plug 'terryma/vim-multiple-cursors'
 
-" Adaptation of one-light and one-dark colorschemes for Vim
+" Adaptation of one-light and one-dark color schemes for Vim
 Plug 'rakr/vim-one'
 
 " vim-snipmate default snippets
@@ -92,20 +100,47 @@ let g:airline#extensions#tabline#left_alt_sep = ''
 let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
 " }}}
-" cpp-modern {{{
-let g:cpp_named_requirements_highlight = 1
+" cpp-enhanced-highlight {{{
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+" }}}
+" fzf {{{
+let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+let g:fzf_colors = {
+      \ 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'Normal'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment']
+      \ }
 " }}}
 " indentLine {{{
 let g:indentLine_char = ''
+let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_first_char = ''
 " }}}
 " JSON {{{
 let g:vim_json_syntax_conceal = 0
 " }}}
+" One {{{
+let g:one_allow_italics = 1
+" }}}
 " }}}
 " Options {{{
 set autoindent smartindent " enable smart indentation
-set cmdheight=2 " make the command region 2 lines high
+"set cmdheight=2 " make the command region 2 lines high
 set colorcolumn=80 " display vertical ruler at column 80
 set completeopt-=preview " disable scratch preview
 set cursorline " highlight current line
@@ -117,60 +152,64 @@ set nobackup nowritebackup " don't generate backup files
 set noshowmode " disable mode indicator
 set nowrap " disable line wrapping
 set number relativenumber " enable hybrid line numbers
-set scrolloff=1 " keep 1 line above and below the cursor
+set scrolloff=1 sidescrolloff=1 " keep 1 line and column offset from the cursor
 set shortmess+=c " don't pass messages to ins-completion-menu
-set signcolumn=yes " always show the sign column
+"set signcolumn=yes " always show the sign column
 set smarttab " enable smart tabs
 "set spell spelllang=en " enable spell checking
-set tabstop=2 shiftwidth=2 softtabstop=0 " make tabs and indents 2 spaces wide
+set tabstop=2 shiftwidth=2 softtabstop=2 " make tabs and indents 2 spaces wide
 set termguicolors " enable true colors support
-set undofile undodir=~/.local/share/nvim/undodir " enable undo files
-set undolevels=1000 undoreload=10000 " limit number of undos
+set undofile undolevels=1000 undoreload=10000 " enable undo files
 set updatetime=300 " use shorter update time
 
-" Set appropriate comment strings according to file type
+" Comment strings
 autocmd FileType c,cc,cpp,cxx,h,hh,hpp,hxx setlocal commentstring=//\ %s
-
-" Disable line numbers and cursorline when in terminal emulator
-augroup TerminalStuff
-  au!
-  autocmd TermOpen * setlocal nonu nornu nocul
-augroup END
 " }}}
 " Appearance {{{
 set background=dark
 colorscheme one
 
-" Transparency
-"hi Normal guibg=NONE ctermbg=NONE
+" One
+call one#highlight('MatchParen', '', '', 'bold')
 
-" Don't highlight current line number background
-hi CursorLineNr guibg=NONE
+" Make background transparent
+"hi Normal guibg=NONE
+
+" Don't highlight line number with cursorline
+"hi CursorLineNr guibg=NONE
 
 " Spell check
-hi clear SpellBad
-hi clear SpellCap
-hi clear SpellLocal
-hi clear SpellRare
-hi SpellBad   guisp=#98C379 gui=undercurl
-hi SpellCap   guisp=#98C379 gui=undercurl
-hi SpellLocal guisp=#98C379 gui=undercurl
-hi SpellRare  guisp=#98C379 gui=undercurl
+exec 'hi SpellBad   guibg=NONE gui=undercurl guifg='
+      \ . synIDattr(synIDtrans(hlID('String')), 'fg', 'gui')
+exec 'hi SpellCap   guibg=NONE gui=undercurl guifg='
+      \ . synIDattr(synIDtrans(hlID('String')), 'fg', 'gui')
+exec 'hi SpellLocal guibg=NONE gui=undercurl guifg='
+      \ . synIDattr(synIDtrans(hlID('String')), 'fg', 'gui')
+exec 'hi SpellRare  guibg=NONE gui=undercurl guifg='
+      \ . synIDattr(synIDtrans(hlID('String')), 'fg', 'gui')
 
 " Coc
-hi CocErrorSign        guifg=#BE5046
-hi CocErrorHighlight   guisp=#BE5046 gui=undercurl
-hi CocWarningSign      guifg=#D19A65
-hi CocWarningHighlight guisp=#D19A65 gui=undercurl
-hi CocCodeLens         guifg=#5B6068
-
-" fzf
-hi fzf1 guifg=#BE5046 guibg=#2C323C
-hi fzf2 guifg=#98C379 guibg=#2C323C
-hi fzf3 guifg=#A1A8B5 guibg=#2C323C
+exec 'hi CocCodeLens guibg=NONE guifg='
+      \ . synIDattr(synIDtrans(hlID('LineNr')), 'fg', 'gui')
+exec 'hi CocErrorSign   guibg=NONE guifg='
+      \ . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
+exec 'hi CocWarningSign guibg=NONE guifg='
+      \ . synIDattr(synIDtrans(hlID('Number')), 'fg', 'gui')
+exec 'hi CocErrorHighlight   guibg='
+      \ . synIDattr(synIDtrans(hlID('CursorLine')), 'bg', 'gui')
+      \ . ' gui=undercurl guifg='
+      \ . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
+exec 'hi CocWarningHighlight guibg='
+      \ . synIDattr(synIDtrans(hlID('CursorLine')), 'bg', 'gui')
+      \ . ' gui=undercurl guifg='
+      \ . synIDattr(synIDtrans(hlID('Number')), 'fg', 'gui')
+autocmd CursorHold * silent call CocActionAsync('highlight')
 " }}}
 " Mappings {{{
 let mapleader = ' ' " use space as leader key
+
+" Normal mode in terminal emulator
+"tnoremap <esc> <C-\><C-n> " NOTE: conflicts with fzf
 
 " Coc {{{
 " Use tab for trigger completion with characters ahead and navigate.
@@ -220,15 +259,8 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -261,20 +293,6 @@ omap af <Plug>(coc-funcobj-a)
 nmap <silent> <TAB> <Plug>(coc-range-select)
 xmap <silent> <TAB> <Plug>(coc-range-select)
 
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold   :call CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR     :call CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
 " Mappings using CoCList:
 " Show all diagnostics.
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
@@ -294,23 +312,26 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 " }}}
 
-" esc -> enter normal mode when in terminal emulator
-tnoremap <esc> <C-\><C-n>
-
-" esc + tab/backspace -> next/previous buffer
-nnoremap <esc><tab> :bnext<CR>
-nnoremap <esc><bs>  :bprev<CR>
-
-" leader + f -> open fuzzy finder for files
+" Fuzzy file search
 nnoremap <leader>f :Files<CR>
 
-" alt + down/up -> move selected lines down/up
-nnoremap <A-down> :m .+1<CR>==
-nnoremap <A-up>   :m .-2<CR>==
-inoremap <A-down> <Esc>:m .+1<CR>==gi
-inoremap <A-up>   <Esc>:m .-2<CR>==gi
-vnoremap <A-down> :m '>+1<CR>gv=gv
-vnoremap <A-up>   :m '<-2<CR>gv=gv
+" Open ripgrep
+nnoremap <leader>rg :Rg<CR>
+
+" Navigate through buffers
+nnoremap <leader>[ :bprev<CR>
+nnoremap <leader>] :bnext<CR>
+
+" Open corresponding header/source file
+nnoremap <leader>s :FSHere<CR>
+
+" Move selected lines down/up
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
 " }}}
 
 " vim:foldmethod=marker

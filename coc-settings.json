@@ -2,14 +2,11 @@
   "languageserver": {
     "ccls": {
       "command": "ccls",
-      "filetypes": ["c", "cpp", "cuda"],
+      "filetypes": ["c", "cpp"],
       "rootPatterns": [".ccls-root", "compile_commands.json"],
       "initializationOptions": {
         "cache": {
-          "directory": "/home/mirza/ramdisk/ccls-cache"
-        },
-        "client": {
-          "snippetSupport": true
+          "directory": "/home/mirzah/ramdisk/ccls-cache"
         },
         "index": {
           "initialBlacklist": ["."]
