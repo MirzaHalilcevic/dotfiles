@@ -1,2 +1,2 @@
 #!/bin/sh
-stow kitty zsh nvim
+stow $@ kitty zsh nvim

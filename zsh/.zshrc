@@ -108,7 +108,9 @@ alias empty_swap="sudo swapoff -a; sudo swapon -a"
 alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS='--color=dark,fg:-1,bg:-1,hl:#c678dd,fg+:#ffffff,bg+:-1,hl+:#d858fe,info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef'
+export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore-vcs"
+export FZF_DEFAULT_OPTS="--layout=reverse --color=dark,fg:-1,bg:-1,hl:#c678dd,fg+:#ffffff,bg+:-1,hl+:#d858fe,info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef"
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
 
 export PATH=$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
 

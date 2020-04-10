@@ -15,5 +15,8 @@
     }
   },
   "codeLens.enable": true,
-  "diagnostic.enableSign": false
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": ""
 }

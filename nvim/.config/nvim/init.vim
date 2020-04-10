@@ -17,6 +17,9 @@ Plug 'vim-airline/vim-airline'
 " Provide easy code formatting in Vim by integrating existing code formatters
 Plug 'Chiel92/vim-autoformat'
 
+" Clang based syntax highlighting for Neovim
+Plug 'arakashic/chromatica.nvim'
+
 " IntelliSense engine for Vim8 & Neovim, full language server protocol support
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
@@ -67,6 +70,9 @@ Plug 'sheerun/vim-polyglot'
 " vim-snipmate default snippets
 Plug 'honza/vim-snippets'
 
+" The fancy start screen for Vim
+Plug 'mhinz/vim-startify'
+
 " An alternative sudo.vim for Vim and Neovim
 Plug 'lambdalisue/suda.vim'
 
@@ -92,22 +98,24 @@ let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
-
-" tabline
+" tabline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#tabline#left_sep = ''
 let g:airline#extensions#tabline#left_alt_sep = ''
 let g:airline#extensions#tabline#right_sep = ''
 let g:airline#extensions#tabline#right_alt_sep = ''
-
-" coc
-let g:airline#extensions#coc#error_symbol = ' '
-let g:airline#extensions#coc#warning_symbol = ' '
-
-" tagbar
+" }}}
+" tagbar {{{
 let g:airline#extensions#tagbar#enabled = 1
 let g:airline#extensions#tagbar#flags = 'p'
+" }}}
+" }}}
+" chromatica.nvim {{{
+let g:chromatica#libclang_path = '/usr/lib/libclang.so'
+let g:chromatica#global_args = ['-isystem/usr/lib/clang/9.0.1/include']
+let g:chromatica#enable_at_startup = 0
+let g:chromatica#responsive_mode = 1
 " }}}
 " vim-cpp-enhanced-highlight (vim-polyglot) {{{
 let g:cpp_class_scope_highlight = 1
@@ -136,9 +144,15 @@ let g:fzf_colors = {
       \ }
 " }}}
 " indentLine {{{
-let g:indentLine_char = ''
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_first_char = ''
+let g:indentLine_color_gui = '#373C44'
+let g:indentLine_char = '▏'
+let g:indentLine_showFirstIndentLevel = 0
+let g:indentLine_first_char = '▏'
+" }}}
+" nerdtree {{{
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeWinSize = 40
 " }}}
 " vim-one {{{
 let g:one_allow_italics = 1
@@ -159,6 +173,7 @@ set noshowmode " disable mode indicator
 set nowrap " disable line wrapping
 set number relativenumber " enable hybrid line numbers
 set scrolloff=5 sidescrolloff=0 " keep 5 lines offset from the cursor
+set shortmess+=I " don't show startup message
 set shortmess+=c " don't pass messages to ins-completion-menu
 "set signcolumn=yes " always show the sign column
 set smarttab " enable smart tabs
@@ -178,13 +193,7 @@ colorscheme one
 " vim-one customization
 call one#highlight('MatchParen', '', '', 'bold')
 
-" Make background transparent
-"hi Normal guibg=NONE
-
-" Don't highlight line number with cursorline
-hi CursorLineNr guibg=NONE
-
-" Coc {{{
+" coc.nvim {{{
 exec 'hi CocCodeLens    guifg='
       \ . synIDattr(synIDtrans(hlID('Comment')), 'fg', 'gui')
 exec 'hi CocErrorSign   guifg='
@@ -192,6 +201,7 @@ exec 'hi CocErrorSign   guifg='
 exec 'hi CocWarningSign guifg='
       \ . synIDattr(synIDtrans(hlID('Number')), 'fg', 'gui')
 
+" Use curly underlines if they're supported
 if $VTE_VERSION != '' || $TERM == 'xterm-kitty'
   exec 'hi CocErrorHighlight   gui=undercurl guisp='
         \ . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
@@ -208,8 +218,11 @@ endif
 autocmd CursorHold * silent call CocActionAsync('highlight')
 " }}}
 
-" indentLine
-let g:indentLine_color_gui = synIDattr(synIDtrans(hlID('Comment')), 'fg', 'gui')
+" Make background transparent
+"hi Normal guibg=NONE
+
+" Don't highlight line number with cursorline
+hi CursorLineNr guibg=NONE
 " }}}
 " Mappings {{{
 let mapleader = ' ' " use space as leader key
@@ -284,7 +297,6 @@ vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Autoformat buffer (or selection)
-" NOTE: Uses .clang-format if available
 nnoremap <leader>af :Autoformat<CR>
 vnoremap <leader>af :Autoformat<CR>
 
@@ -294,8 +306,14 @@ nnoremap <leader><leader> :Files<CR>
 " Switch to corresponding header/source file
 nnoremap <leader>fs :FSHere<CR>
 
+" Toggle NERDTree
+nnoremap <leader>nt :NERDTreeToggle<CR>
+
 " Open ripgrep in fzf
 nnoremap <leader>rg :Rg<CR>
+" }}}
+" Misc {{{
+autocmd User StartifyReady :IndentLinesDisable
 " }}}
 
 " vim:foldmethod=marker
