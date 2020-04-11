@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/mirzah/.oh-my-zsh"
@@ -28,7 +28,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -75,7 +75,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(common-aliases bgnotify careful_rm colored-man-pages git zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
+plugins=(common-aliases bgnotify careful_rm colored-man-pages git vi-mode zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -92,6 +92,7 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='mvim'
 # fi
+export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -108,11 +109,6 @@ alias empty_swap="sudo swapoff -a; sudo swapon -a"
 alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore-vcs"
-export FZF_DEFAULT_OPTS="--layout=reverse --color=dark,fg:-1,bg:-1,hl:#c678dd,fg+:#ffffff,bg+:-1,hl+:#d858fe,info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef"
-export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-
-export PATH=$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

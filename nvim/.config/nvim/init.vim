@@ -1,5 +1,5 @@
 " A Neovim configuration by Mirza Halilcevic
-" NOTE: 'Nerd Fonts' patched font is required for special glyphs/icons
+" NOTE: `Nerd Fonts` patched font is required for special glyphs/icons
 
 " Plugins {{{
 " Autoinstall vim-plug {{{
@@ -161,7 +161,7 @@ let g:one_allow_italics = 1
 " Options {{{
 set autoindent smartindent " enable smart indentation
 "set cmdheight=2 " make the command region 2 lines high
-set colorcolumn=80 " display vertical ruler at column 80
+set colorcolumn=81 " display vertical ruler at column 81
 set completeopt-=preview " disable scratch preview
 set cursorline " highlight current line
 set expandtab " use spaces instead of tabs
@@ -222,12 +222,12 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 "hi Normal guibg=NONE
 
 " Don't highlight line number with cursorline
-hi CursorLineNr guibg=NONE
+"hi CursorLineNr guibg=NONE
 " }}}
 " Mappings {{{
 let mapleader = ' ' " use space as leader key
 
-" Coc (copied from coc.nvim readme) {{{
+" coc.nvim (copied from readme) {{{
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -301,7 +301,7 @@ nnoremap <leader>af :Autoformat<CR>
 vnoremap <leader>af :Autoformat<CR>
 
 " Fuzzy file search
-nnoremap <leader><leader> :Files<CR>
+nnoremap <leader>fz :Files<CR>
 
 " Switch to corresponding header/source file
 nnoremap <leader>fs :FSHere<CR>
@@ -313,6 +313,13 @@ nnoremap <leader>nt :NERDTreeToggle<CR>
 nnoremap <leader>rg :Rg<CR>
 " }}}
 " Misc {{{
+" Jump to the last position when reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+        \| exe "normal! g'\"" | endif
+endif
+
+" Disable indentLine on startup screen
 autocmd User StartifyReady :IndentLinesDisable
 " }}}
 
