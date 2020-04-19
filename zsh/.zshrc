@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
+export PATH=$HOME/dev_environment_ubuntu/dev-container-ubuntu:$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/mirzah/.oh-my-zsh"
@@ -75,7 +75,18 @@ HYPHEN_INSENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(common-aliases bgnotify careful_rm colored-man-pages git vi-mode zsh-autosuggestions zsh-completions zsh-syntax-highlighting)
+plugins=(
+  common-aliases
+  bgnotify
+  careful_rm
+  colored-man-pages
+  git
+  history-substring-search
+  vi-mode
+  zsh-autosuggestions
+  zsh-completions
+  zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -106,9 +117,15 @@ export EDITOR='nvim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias empty_swap="sudo swapoff -a; sudo swapon -a"
-alias minifix="(wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/MiniFIX/MiniFIX.exe &> /dev/null &)"
+
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export BAT_THEME="OneHalfDark"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -9,14 +9,26 @@
           "directory": "/home/mirzah/ramdisk/ccls-cache"
         },
         "index": {
-          "initialBlacklist": ["."]
+          "initialBlacklist": ["."],
+          "threads": 4
         }
       }
     }
   },
   "codeLens.enable": true,
-  "diagnostic.errorSign": "",
+  "diagnostic.enableHighlightLineNumber": false,
+  "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
-  "diagnostic.infoSign": "",
-  "diagnostic.hintSign": ""
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": "",
+  "cSpell.userWords": [
+    "Sdma",
+    "Startify",
+    "ccls",
+    "chromatica",
+    "fswitch",
+    "isystem",
+    "mirzah",
+    "ramdisk"
+  ]
 }
