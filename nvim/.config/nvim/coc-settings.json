@@ -16,13 +16,13 @@
     }
   },
   "codeLens.enable": true,
+  "codeLens.separator": "",
   "diagnostic.enableHighlightLineNumber": false,
   "diagnostic.errorSign": "",
   "diagnostic.warningSign": "",
   "diagnostic.infoSign": "",
   "diagnostic.hintSign": "",
   "cSpell.userWords": [
-    "Sdma",
     "Startify",
     "ccls",
     "chromatica",

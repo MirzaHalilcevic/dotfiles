@@ -6,7 +6,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/dev_environment_ubuntu/dev-container-ubuntu:$HOME/dev_environment/dev-container:$HOME/dev_environment/release-container:$PATH
+export PATH=$HOME/dev_environment/release-container:$HOME/dev_environment/dev-container:$PATH
+export PATH=$HOME/dev_environment_ubuntu/dev-container-ubuntu:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/mirzah/.oh-my-zsh"
@@ -76,16 +77,15 @@ HYPHEN_INSENSITIVE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  common-aliases
   bgnotify
+  common-aliases
   careful_rm
   colored-man-pages
-  git
+  git vi-mode
+  zsh-syntax-highlighting
   history-substring-search
-  vi-mode
   zsh-autosuggestions
   zsh-completions
-  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -98,12 +98,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-export EDITOR='nvim'
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -123,9 +122,56 @@ bindkey '^N' history-substring-search-down
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 
+export BAT_THEME="base16"
+export BAT_STYLE="plain"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export BAT_THEME="OneHalfDark"
+export FZF_DEFAULT_OPTS="
+  --height=100 --layout=default
+  --preview='bat --color=always {-1}'
+  --preview-window=up:noborder
+"
+export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore-vcs"
+
+# Base16 Tomorrow Night
+# Author: Chris Kempson (http://chriskempson.com)
+_gen_fzf_default_opts() {
+
+  local color00='#1d1f21'
+  local color01='#282a2e'
+  local color02='#373b41'
+  local color03='#969896'
+  local color04='#b4b7b4'
+  local color05='#c5c8c6'
+  local color06='#e0e0e0'
+  local color07='#ffffff'
+  local color08='#cc6666'
+  local color09='#de935f'
+  local color0A='#f0c674'
+  local color0B='#b5bd68'
+  local color0C='#8abeb7'
+  local color0D='#81a2be'
+  local color0E='#b294bb'
+  local color0F='#a3685a'
+
+  export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
+    --color=bg+:-1,bg:$color00,spinner:$color0C,hl:$color0D
+    --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C
+    --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D
+  "
+
+}
+_gen_fzf_default_opts
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Default prompt symbol.
+typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIINS_CONTENT_EXPANSION=''
+# Prompt symbol in command vi mode.
+typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VICMD_CONTENT_EXPANSION=''
+# Prompt symbol in visual vi mode.
+typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIVIS_CONTENT_EXPANSION=''
+# Prompt symbol in overwrite vi mode.
+typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_VIOWR_CONTENT_EXPANSION=''

@@ -13,9 +13,13 @@ call plug#begin(stdpath('data') . '/plugged')
 
 " Lean & mean status/tabline for Vim that's light as air
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " Provide easy code formatting in Vim by integrating existing code formatters
 Plug 'Chiel92/vim-autoformat'
+
+" Base16 for Vim
+Plug 'chriskempson/base16-vim'
 
 " Clang based syntax highlighting for Neovim
 Plug 'arakashic/chromatica.nvim'
@@ -67,6 +71,9 @@ Plug 'rakr/vim-one'
 " A solid language pack for Vim
 Plug 'sheerun/vim-polyglot'
 
+" Simpler Rainbow Parentheses
+Plug 'junegunn/rainbow_parentheses.vim'
+
 " vim-snipmate default snippets
 Plug 'honza/vim-snippets'
 
@@ -110,10 +117,11 @@ let g:airline#extensions#tabline#right_alt_sep = ''
 " }}}
 " tagbar {{{
 let g:airline#extensions#tagbar#enabled = 1
-let g:airline#extensions#tagbar#flags = 's'
+let g:airline#extensions#tagbar#flags = ''
 " }}}
 " }}}
 " chromatica.nvim {{{
+let g:chromatica#enable_at_startup = 0
 let g:chromatica#libclang_path = '/usr/lib/libclang.so'
 let g:chromatica#global_args = ['-isystem/usr/lib/clang/9.0.1/include']
 let g:chromatica#responsive_mode = 1
@@ -127,7 +135,7 @@ let g:cpp_experimental_simple_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 " }}}
 " fzf.vim {{{
-let g:fzf_preview_window = 'right:55%'
+let g:fzf_preview_window = 'up:50%'
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 let g:fzf_colors = {
       \ 'fg':      ['fg', 'Normal'],
@@ -148,21 +156,24 @@ let g:fzf_colors = {
 " fzf-preview.vim {{{
 let g:fzf_preview_floating_window_rate = 0.8
 let g:fzf_preview_command = 'bat --color=always --style=numbers,changes {-1}'
-let g:fzf_preview_fzf_preview_window_option = 'right:55%'
+let g:fzf_preview_fzf_preview_window_option = 'up:50%'
 let g:fzf_preview_use_dev_icons = 1
 " }}}
 " indentLine {{{
 let g:indentLine_char = '▏'
 let g:indentLine_first_char = '▏'
 let g:indentLine_color_gui = '#3B4048'
+let g:indentLine_showFirstIndentLevel = 0
+let g:indentLine_enabled = 0
 " }}}
 " nerdtree {{{
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 let g:NERDTreeWinSize = 40
 " }}}
-" vim-one {{{
-let g:one_allow_italics = 1
+" rainbow_parentheses.vim {{{
+let g:rainbow#pairs = [['(', ')'], ['[', ']']]
+let g:rainbow#blacklist = []
 " }}}
 " vim-startify {{{
 let g:startify_change_to_dir = 0
@@ -187,32 +198,30 @@ set scrolloff=5 sidescrolloff=0 " keep 5 lines above and below the cursor
 set shortmess+=I " don't show the intro message
 set shortmess+=c " don't pass messages to ins-completion-menu
 "set signcolumn=yes " always show the sign column
+set splitbelow splitright " put new windows below/right when splitting
 set termguicolors " enable true colors support
 set undofile " enable undo files
 set updatetime=300 " use shorter update time
 " }}}
 " Appearance {{{
-colorscheme one " set color scheme to one
+colorscheme base16-tomorrow-night
 
-" One customization {{{
-call one#highlight('MatchParen', '', '3B4048', 'bold')
-" }}}
-
-" Coc highlighting {{{
+" coc.nvim highlights {{{
 highlight CocHighlightText guibg=#3B4048
 
 " Match diagnostic colors with color scheme
-let lens    = synIDattr(synIDtrans(hlID('LineNr')),   'fg', 'gui')
-let error   = synIDattr(synIDtrans(hlID('Error')),    'fg', 'gui')
-let warning = synIDattr(synIDtrans(hlID('Number')),   'fg', 'gui')
-let info    = synIDattr(synIDtrans(hlID('Function')), 'fg', 'gui')
-let hint    = synIDattr(synIDtrans(hlID('Type')),     'fg', 'gui')
+let bg      = synIDattr(synIDtrans(hlID('SignColumn')), 'bg', 'gui')
+let lens    = synIDattr(synIDtrans(hlID('LineNr')),     'fg', 'gui')
+let error   = synIDattr(synIDtrans(hlID('Error')),      'fg', 'gui')
+let warning = synIDattr(synIDtrans(hlID('Number')),     'fg', 'gui')
+let info    = synIDattr(synIDtrans(hlID('Function')),   'fg', 'gui')
+let hint    = synIDattr(synIDtrans(hlID('Type')),       'fg', 'gui')
 
-execute 'highlight CocCodeLens    guifg=' . lens
-execute 'highlight CocErrorSign   guifg=' . error
-execute 'highlight CocWarningSign guifg=' . warning
-execute 'highlight CocInfoSign    guifg=' . info
-execute 'highlight CocHintSign    guifg=' . hint
+execute 'highlight CocCodeLens    guibg=' . bg . ' guifg=' . lens
+execute 'highlight CocErrorSign   guibg=' . bg . ' guifg=' . error
+execute 'highlight CocWarningSign guibg=' . bg . ' guifg=' . warning
+execute 'highlight CocInfoSign    guibg=' . bg . ' guifg=' . info
+execute 'highlight CocHintSign    guibg=' . bg . ' guifg=' . hint
 
 " Use curly underlines if they're supported
 if $VTE_VERSION != '' || $TERM == 'xterm-kitty'
@@ -232,11 +241,22 @@ endif
 "highlight Normal guibg=NONE
 
 " Don't highlight line number with cursorline
-"highlight CursorLineNr guibg=NONE
+highlight CursorLineNr guibg=#313335
 " }}}
 " Mappings {{{
 let mapleader = ' ' " use space as leader key
 
+" Plugin leaders {{{
+nmap <Leader>o [fswitch]
+nmap <Leader>f [fzf-preview]
+xmap <Leader>f [fzf-preview]
+nmap <Leader>n [nerdtree]
+" }}}
+" Plugin mappings {{{
+" vim-autoformat {{{
+nnoremap <silent> <Leader>af :Autoformat<CR>
+vnoremap <silent> <Leader>af :Autoformat<CR>
+" }}}
 " coc.nvim (copied from readme) {{{
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -298,8 +318,6 @@ nmap <leader>ac <Plug>(coc-codeaction)
 nmap <leader>qf <Plug>(coc-fix-current)
 " }}}
 " vim-fswitch {{{
-nmap <Leader>o [fswitch]
-
 nnoremap <silent> [fswitch]f :FSHere<CR>
 nnoremap <silent> [fswitch]l :FSRight<CR>
 nnoremap <silent> [fswitch]L :FSSplitRight<CR>
@@ -311,44 +329,36 @@ nnoremap <silent> [fswitch]j :FSBelow<CR>
 nnoremap <silent> [fswitch]J :FSSplitBelow<CR>
 " }}}
 " fzf-preview.vim {{{
-nmap <Leader>f [fzf-p]
-xmap <Leader>f [fzf-p]
-
-nnoremap <silent> [fzf-p]p     :<C-u>FzfPreviewFromResources project_mru git<CR>
-nnoremap <silent> [fzf-p]gs    :<C-u>FzfPreviewGitStatus<CR>
-nnoremap <silent> [fzf-p]b     :<C-u>FzfPreviewBuffers<CR>
-nnoremap <silent> [fzf-p]B     :<C-u>FzfPreviewAllBuffers<CR>
-nnoremap <silent> [fzf-p]o     :<C-u>FzfPreviewFromResources buffer project_mru<CR>
-nnoremap <silent> [fzf-p]<C-o> :<C-u>FzfPreviewJumps<CR>
-nnoremap <silent> [fzf-p]g;    :<C-u>FzfPreviewChanges<CR>
-nnoremap <silent> [fzf-p]/     :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'"<CR>
-nnoremap <silent> [fzf-p]*     :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
-nnoremap          [fzf-p]gr    :<C-u>FzfPreviewProjectGrep<Space>
-xnoremap          [fzf-p]gr    "sy:FzfPreviewProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
-nnoremap <silent> [fzf-p]t     :<C-u>FzfPreviewBufferTags<CR>
-nnoremap <silent> [fzf-p]q     :<C-u>FzfPreviewQuickFix<CR>
-nnoremap <silent> [fzf-p]l     :<C-u>FzfPreviewLocationList<CR>
+nnoremap <silent> [fzf-preview]p     :<C-u>FzfPreviewFromResources project_mru git<CR>
+nnoremap <silent> [fzf-preview]gs    :<C-u>FzfPreviewGitStatus<CR>
+nnoremap <silent> [fzf-preview]b     :<C-u>FzfPreviewBuffers<CR>
+nnoremap <silent> [fzf-preview]B     :<C-u>FzfPreviewAllBuffers<CR>
+nnoremap <silent> [fzf-preview]o     :<C-u>FzfPreviewFromResources buffer project_mru<CR>
+nnoremap <silent> [fzf-preview]<C-o> :<C-u>FzfPreviewJumps<CR>
+nnoremap <silent> [fzf-preview]g;    :<C-u>FzfPreviewChanges<CR>
+nnoremap <silent> [fzf-preview]/     :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'"<CR>
+nnoremap <silent> [fzf-preview]*     :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+nnoremap          [fzf-preview]gr    :<C-u>FzfPreviewProjectGrep<Space>
+xnoremap          [fzf-preview]gr    "sy:FzfPreviewProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+nnoremap <silent> [fzf-preview]t     :<C-u>FzfPreviewBufferTags<CR>
+nnoremap <silent> [fzf-preview]q     :<C-u>FzfPreviewQuickFix<CR>
+nnoremap <silent> [fzf-preview]l     :<C-u>FzfPreviewLocationList<CR>
 " }}}
 " nerdtree {{{
-nmap <Leader>n [ntree]
-
-nnoremap <silent> [ntree]t :NERDTreeToggle<CR>
-nnoremap <silent> [ntree]f :NERDTreeFind<CR>
+nnoremap <silent> [nerdtree]t :NERDTreeToggle<CR>
+nnoremap <silent> [nerdtree]f :NERDTreeFind<CR>
+" }}}
+" tagbar {{{
+nnoremap <silent> <Leader>ct :TagbarCurrentTag p<CR>
+" }}}
 " }}}
 
 " Navigate through buffers
 nnoremap <silent> <Leader>[ :bprevious<CR>
 nnoremap <silent> <Leader>] :bnext<CR>
 
-" Autoformat buffer (or selection)
-nnoremap <silent> <Leader>af :Autoformat<CR>
-vnoremap <silent> <Leader>af :Autoformat<CR>
-
-" Delete buffer
+" Delete current buffer
 nnoremap <silent> <Leader>bd :bdelete<CR>
-
-" Show current tag in the command region
-nnoremap <silent> <Leader>ct :TagbarCurrentTag p<CR>
 
 " Normal mode in terminal emulator
 " NOTE: You won't be able to close fzf window with <Esc>
@@ -370,7 +380,7 @@ augroup Autocmds
         \ | execute "normal! g'\"" | endif
 
   " Set comment strings
-  autocmd FileType c,cc,cpp,cxx,h,hh,hpp,hxx setlocal commentstring=//\ %s
+  autocmd FileType c,cpp setlocal commentstring=//\ %s
 
   " Highlight the symbol and its references when holding the cursor
   autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -378,16 +388,15 @@ augroup Autocmds
   " Update signature help on JumpPlaceholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
+  " Enable indent lines for these file types
+  autocmd FileType c,cpp IndentLinesEnable
+
+  " Enable rainbow parentheses for these file types
+  autocmd FileType c,cpp RainbowParentheses
+
   " Close Vim if the only window left open is a NERDTree
   autocmd BufEnter * if (winnr('$') == 1 && exists('b:NERDTree')
         \ && b:NERDTree.isTabTree()) | q | endif
-
-  " Disable indentLine inside help window
-  autocmd BufWinEnter * if &l:buftype ==# 'help' | execute 'IndentLinesDisable'
-        \ | endif
-
-  " Disable indentLine on startup screen
-  autocmd User StartifyReady IndentLinesDisable
 augroup END
 " }}}
 
