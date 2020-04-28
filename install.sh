@@ -1,2 +1,2 @@
 #!/bin/sh
-stow $@ kitty zsh nvim
+stow $@ bat colorls fish kitty nvim

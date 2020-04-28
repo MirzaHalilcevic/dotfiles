@@ -18,6 +18,9 @@ Plug 'vim-airline/vim-airline-themes'
 " Provide easy code formatting in Vim by integrating existing code formatters
 Plug 'Chiel92/vim-autoformat'
 
+" Collection of awesome color schemes for Vim, merged for quick use
+Plug 'rafi/awesome-vim-colorschemes'
+
 " Base16 for Vim
 Plug 'chriskempson/base16-vim'
 
@@ -65,9 +68,6 @@ Plug 'terryma/vim-multiple-cursors'
 " A tree explorer plugin for Vim
 Plug 'preservim/nerdtree'
 
-" Adaptation of one-light and one-dark color schemes for Vim
-Plug 'rakr/vim-one'
-
 " A solid language pack for Vim
 Plug 'sheerun/vim-polyglot'
 
@@ -103,17 +103,9 @@ call plug#end()
 " Plugins config {{{
 " vim-airline {{{
 let g:airline_powerline_fonts = 1
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
 " tabline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
-let g:airline#extensions#tabline#right_sep = ''
-let g:airline#extensions#tabline#right_alt_sep = ''
 " }}}
 " tagbar {{{
 let g:airline#extensions#tagbar#enabled = 1
@@ -161,8 +153,8 @@ let g:fzf_preview_use_dev_icons = 1
 " }}}
 " indentLine {{{
 let g:indentLine_char = '▏'
+let g:indentLine_setColors = 0
 let g:indentLine_first_char = '▏'
-let g:indentLine_color_gui = '#3B4048'
 let g:indentLine_showFirstIndentLevel = 0
 let g:indentLine_enabled = 0
 " }}}
@@ -184,7 +176,7 @@ let g:startify_change_to_vcs_root = 1
 set autoindent " automatically indnet next line
 set background=dark " use dark color scheme variant
 "set cmdheight=2 " make the command region 2 lines high
-set colorcolumn=81 " display vertical ruler at 81st column
+set colorcolumn=81,121 " display vertical ruler at 81st and 121st column
 set cursorline " highlight current line
 set expandtab shiftwidth=2 softtabstop=2 " make tabs and indents 2 spaces wide
 set hidden " hide buffers with unsaved changes
@@ -204,24 +196,23 @@ set undofile " enable undo files
 set updatetime=300 " use shorter update time
 " }}}
 " Appearance {{{
-colorscheme base16-tomorrow-night
+colorscheme one " set color scheme to one
 
 " coc.nvim highlights {{{
-highlight CocHighlightText guibg=#3B4048
+let lens       = synIDattr(synIDtrans(hlID('LineNr')),     'fg', 'gui')
+let error      = synIDattr(synIDtrans(hlID('Error')),      'fg', 'gui')
+let warning    = synIDattr(synIDtrans(hlID('Number')),     'fg', 'gui')
+let info       = synIDattr(synIDtrans(hlID('Function')),   'fg', 'gui')
+let hint       = synIDattr(synIDtrans(hlID('Type')),       'fg', 'gui')
+let background = synIDattr(synIDtrans(hlID('SignColumn')), 'bg', 'gui')
+let comment    = synIDattr(synIDtrans(hlID('String')),    'fg', 'gui')
 
 " Match diagnostic colors with color scheme
-let bg      = synIDattr(synIDtrans(hlID('SignColumn')), 'bg', 'gui')
-let lens    = synIDattr(synIDtrans(hlID('LineNr')),     'fg', 'gui')
-let error   = synIDattr(synIDtrans(hlID('Error')),      'fg', 'gui')
-let warning = synIDattr(synIDtrans(hlID('Number')),     'fg', 'gui')
-let info    = synIDattr(synIDtrans(hlID('Function')),   'fg', 'gui')
-let hint    = synIDattr(synIDtrans(hlID('Type')),       'fg', 'gui')
-
-execute 'highlight CocCodeLens    guibg=' . bg . ' guifg=' . lens
-execute 'highlight CocErrorSign   guibg=' . bg . ' guifg=' . error
-execute 'highlight CocWarningSign guibg=' . bg . ' guifg=' . warning
-execute 'highlight CocInfoSign    guibg=' . bg . ' guifg=' . info
-execute 'highlight CocHintSign    guibg=' . bg . ' guifg=' . hint
+execute 'highlight CocCodeLens    guibg=' . background . ' guifg=' . lens
+execute 'highlight CocErrorSign   guibg=' . background . ' guifg=' . error
+execute 'highlight CocWarningSign guibg=' . background . ' guifg=' . warning
+execute 'highlight CocInfoSign    guibg=' . background . ' guifg=' . info
+execute 'highlight CocHintSign    guibg=' . background . ' guifg=' . hint
 
 " Use curly underlines if they're supported
 if $VTE_VERSION != '' || $TERM == 'xterm-kitty'
@@ -241,7 +232,7 @@ endif
 "highlight Normal guibg=NONE
 
 " Don't highlight line number with cursorline
-highlight CursorLineNr guibg=#313335
+"highlight CursorLineNr guibg=NONE
 " }}}
 " Mappings {{{
 let mapleader = ' ' " use space as leader key
