@@ -1,4 +1,4 @@
-# path to containers
+# docker containers
 set PATH $HOME/dev_environment/dev-container $HOME/dev_environment/release-container $PATH
 set PATH $HOME/dev_environment_ubuntu/dev-container-ubuntu $PATH
 
@@ -34,3 +34,6 @@ set -U FZF_DEFAULT_COMMAND "
 
 # colorls
 alias ls="$HOME/.gem/ruby/2.7.0/gems/colorls-1.3.3/exe/colorls"
+
+# git
+abbr -a -g gcsm git commit -s -m
