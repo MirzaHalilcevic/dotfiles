@@ -21,9 +21,6 @@ Plug 'Chiel92/vim-autoformat'
 " Collection of awesome color schemes for Vim, merged for quick use
 Plug 'rafi/awesome-vim-colorschemes'
 
-" Base16 for Vim
-Plug 'chriskempson/base16-vim'
-
 " Clang based syntax highlighting for Neovim
 Plug 'arakashic/chromatica.nvim'
 
@@ -35,6 +32,9 @@ Plug 'yuttie/comfortable-motion.vim'
 
 " Comment stuff out
 Plug 'tpope/vim-commentary'
+
+" Preview colors in source code while editing
+Plug 'ap/vim-css-color'
 
 " Asynchronous build and test dispatcher
 Plug 'tpope/vim-dispatch'
@@ -52,9 +52,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-" Dark powered fzf plugin
-Plug 'yuki-ycino/fzf-preview.vim'
-
 " A Vim plugin which shows a git diff in the gutter (sign column) and
 " stages/undoes hunks and partial hunks
 Plug 'airblade/vim-gitgutter'
@@ -71,7 +68,7 @@ Plug 'preservim/nerdtree'
 " A solid language pack for Vim
 Plug 'sheerun/vim-polyglot'
 
-" Simpler Rainbow Parentheses
+" Simpler rainbow parentheses
 Plug 'junegunn/rainbow_parentheses.vim'
 
 " vim-snipmate default snippets
@@ -103,9 +100,17 @@ call plug#end()
 " Plugins config {{{
 " vim-airline {{{
 let g:airline_powerline_fonts = 1
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
 " tabline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
 " }}}
 " tagbar {{{
 let g:airline#extensions#tagbar#enabled = 1
@@ -114,7 +119,7 @@ let g:airline#extensions#tagbar#flags = ''
 " }}}
 " chromatica.nvim {{{
 let g:chromatica#enable_at_startup = 0
-let g:chromatica#libclang_path = '/usr/lib/libclang.so'
+let g:chromatica#libclang_path = '/usr/lib/llvm-10/lib/libclang.so.1'
 let g:chromatica#global_args = ['-isystem/usr/lib/clang/9.0.1/include']
 let g:chromatica#responsive_mode = 1
 " }}}
@@ -127,8 +132,8 @@ let g:cpp_experimental_simple_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 " }}}
 " fzf.vim {{{
-let g:fzf_preview_window = 'up:50%'
-let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+let g:fzf_preview_window = ''
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7 } }
 let g:fzf_colors = {
       \ 'fg':      ['fg', 'Normal'],
       \ 'bg':      ['bg', 'Normal'],
@@ -145,16 +150,10 @@ let g:fzf_colors = {
       \ 'header':  ['fg', 'Comment']
       \ }
 " }}}
-" fzf-preview.vim {{{
-let g:fzf_preview_floating_window_rate = 0.8
-let g:fzf_preview_command = 'bat --color=always --style=numbers,changes {-1}'
-let g:fzf_preview_fzf_preview_window_option = 'up:50%'
-let g:fzf_preview_use_dev_icons = 1
-" }}}
 " indentLine {{{
 let g:indentLine_char = '▏'
-let g:indentLine_setColors = 0
 let g:indentLine_first_char = '▏'
+let g:indentLine_color_gui = '#3B4048'
 let g:indentLine_showFirstIndentLevel = 0
 let g:indentLine_enabled = 0
 " }}}
@@ -162,6 +161,9 @@ let g:indentLine_enabled = 0
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
 let g:NERDTreeWinSize = 40
+" }}}
+" vim-one (awesome-vim-colorschemes) {{{
+let g:one_allow_italics = 1
 " }}}
 " rainbow_parentheses.vim {{{
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
@@ -176,7 +178,7 @@ let g:startify_change_to_vcs_root = 1
 set autoindent " automatically indnet next line
 set background=dark " use dark color scheme variant
 "set cmdheight=2 " make the command region 2 lines high
-set colorcolumn=81,121 " display vertical ruler at 81st and 121st column
+"set colorcolumn=81 " display vertical ruler at 81st column
 set cursorline " highlight current line
 set expandtab shiftwidth=2 softtabstop=2 " make tabs and indents 2 spaces wide
 set hidden " hide buffers with unsaved changes
@@ -196,23 +198,26 @@ set undofile " enable undo files
 set updatetime=300 " use shorter update time
 " }}}
 " Appearance {{{
-colorscheme one " set color scheme to one
+colorscheme one " set color scheme to vim-one
 
+" vim-one customization {{{
+call one#highlight('MatchParen', '', '3B4048', 'bold')
+" }}}
 " coc.nvim highlights {{{
-let lens       = synIDattr(synIDtrans(hlID('LineNr')),     'fg', 'gui')
-let error      = synIDattr(synIDtrans(hlID('Error')),      'fg', 'gui')
-let warning    = synIDattr(synIDtrans(hlID('Number')),     'fg', 'gui')
-let info       = synIDattr(synIDtrans(hlID('Function')),   'fg', 'gui')
-let hint       = synIDattr(synIDtrans(hlID('Type')),       'fg', 'gui')
-let background = synIDattr(synIDtrans(hlID('SignColumn')), 'bg', 'gui')
-let comment    = synIDattr(synIDtrans(hlID('String')),    'fg', 'gui')
+let lens    = synIDattr(synIDtrans(hlID('LineNr')),   'fg', 'gui')
+let error   = synIDattr(synIDtrans(hlID('Error')),    'fg', 'gui')
+let warning = synIDattr(synIDtrans(hlID('Number')),   'fg', 'gui')
+let info    = synIDattr(synIDtrans(hlID('Function')), 'fg', 'gui')
+let hint    = synIDattr(synIDtrans(hlID('Type')),     'fg', 'gui')
+
+highlight CocHighlightText guibg=#3B4048
 
 " Match diagnostic colors with color scheme
-execute 'highlight CocCodeLens    guibg=' . background . ' guifg=' . lens
-execute 'highlight CocErrorSign   guibg=' . background . ' guifg=' . error
-execute 'highlight CocWarningSign guibg=' . background . ' guifg=' . warning
-execute 'highlight CocInfoSign    guibg=' . background . ' guifg=' . info
-execute 'highlight CocHintSign    guibg=' . background . ' guifg=' . hint
+execute 'highlight CocCodeLens    guifg=' . lens
+execute 'highlight CocErrorSign   guifg=' . error
+execute 'highlight CocWarningSign guifg=' . warning
+execute 'highlight CocInfoSign    guifg=' . info
+execute 'highlight CocHintSign    guifg=' . hint
 
 " Use curly underlines if they're supported
 if $VTE_VERSION != '' || $TERM == 'xterm-kitty'
@@ -231,23 +236,12 @@ endif
 " Make background transparent
 "highlight Normal guibg=NONE
 
-" Don't highlight line number with cursorline
+" Don't highlight current line number
 "highlight CursorLineNr guibg=NONE
 " }}}
 " Mappings {{{
 let mapleader = ' ' " use space as leader key
 
-" Plugin leaders {{{
-nmap <Leader>o [fswitch]
-nmap <Leader>f [fzf-preview]
-xmap <Leader>f [fzf-preview]
-nmap <Leader>n [nerdtree]
-" }}}
-" Plugin mappings {{{
-" vim-autoformat {{{
-nnoremap <silent> <Leader>af :Autoformat<CR>
-vnoremap <silent> <Leader>af :Autoformat<CR>
-" }}}
 " coc.nvim (copied from readme) {{{
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -308,48 +302,26 @@ nmap <leader>ac <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf <Plug>(coc-fix-current)
 " }}}
-" vim-fswitch {{{
-nnoremap <silent> [fswitch]f :FSHere<CR>
-nnoremap <silent> [fswitch]l :FSRight<CR>
-nnoremap <silent> [fswitch]L :FSSplitRight<CR>
-nnoremap <silent> [fswitch]h :FSLeft<CR>
-nnoremap <silent> [fswitch]H :FSSplitLeft<CR>
-nnoremap <silent> [fswitch]k :FSAbove<CR>
-nnoremap <silent> [fswitch]K :FSSplitAbove<CR>
-nnoremap <silent> [fswitch]j :FSBelow<CR>
-nnoremap <silent> [fswitch]J :FSSplitBelow<CR>
-" }}}
-" fzf-preview.vim {{{
-nnoremap <silent> [fzf-preview]p     :<C-u>FzfPreviewFromResources project_mru git<CR>
-nnoremap <silent> [fzf-preview]gs    :<C-u>FzfPreviewGitStatus<CR>
-nnoremap <silent> [fzf-preview]b     :<C-u>FzfPreviewBuffers<CR>
-nnoremap <silent> [fzf-preview]B     :<C-u>FzfPreviewAllBuffers<CR>
-nnoremap <silent> [fzf-preview]o     :<C-u>FzfPreviewFromResources buffer project_mru<CR>
-nnoremap <silent> [fzf-preview]<C-o> :<C-u>FzfPreviewJumps<CR>
-nnoremap <silent> [fzf-preview]g;    :<C-u>FzfPreviewChanges<CR>
-nnoremap <silent> [fzf-preview]/     :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'"<CR>
-nnoremap <silent> [fzf-preview]*     :<C-u>FzfPreviewLines -add-fzf-arg=--no-sort -add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
-nnoremap          [fzf-preview]gr    :<C-u>FzfPreviewProjectGrep<Space>
-xnoremap          [fzf-preview]gr    "sy:FzfPreviewProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
-nnoremap <silent> [fzf-preview]t     :<C-u>FzfPreviewBufferTags<CR>
-nnoremap <silent> [fzf-preview]q     :<C-u>FzfPreviewQuickFix<CR>
-nnoremap <silent> [fzf-preview]l     :<C-u>FzfPreviewLocationList<CR>
-" }}}
-" nerdtree {{{
-nnoremap <silent> [nerdtree]t :NERDTreeToggle<CR>
-nnoremap <silent> [nerdtree]f :NERDTreeFind<CR>
-" }}}
-" tagbar {{{
-nnoremap <silent> <Leader>ct :TagbarCurrentTag p<CR>
-" }}}
-" }}}
+
+" Autoformat current buffer (or selection)
+nnoremap <silent> <Leader>af :Autoformat<CR>
+vnoremap <silent> <Leader>af :Autoformat<CR>
+
+" Delete current buffer
+nnoremap <silent> <Leader>bd :bdelete<CR>
 
 " Navigate through buffers
 nnoremap <silent> <Leader>[ :bprevious<CR>
 nnoremap <silent> <Leader>] :bnext<CR>
 
-" Delete current buffer
-nnoremap <silent> <Leader>bd :bdelete<CR>
+" Open fuzzy finder for files
+nnoremap <silent> <Leader>f :Files<CR>
+
+" Open corresponding header/source file
+nnoremap <silent> <Leader>o :FSHere<CR>
+
+" Display raw prototype of current tag in the command region
+nnoremap <silent> <Leader>ct :TagbarCurrentTag p<CR>
 
 " Normal mode in terminal emulator
 " NOTE: You won't be able to close fzf window with <Esc>
@@ -370,6 +342,9 @@ augroup Autocmds
   autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$')
         \ | execute "normal! g'\"" | endif
 
+  " Highlight 81st column for these file types
+  autocmd FileType vim,c,cpp,json setlocal colorcolumn=81
+
   " Set comment strings
   autocmd FileType c,cpp setlocal commentstring=//\ %s
 
@@ -380,14 +355,11 @@ augroup Autocmds
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
   " Enable indent lines for these file types
-  autocmd FileType c,cpp IndentLinesEnable
+  autocmd FileType vim,c,cpp,json IndentLinesEnable
 
   " Enable rainbow parentheses for these file types
   autocmd FileType c,cpp RainbowParentheses
 
-  " Close Vim if the only window left open is a NERDTree
-  autocmd BufEnter * if (winnr('$') == 1 && exists('b:NERDTree')
-        \ && b:NERDTree.isTabTree()) | q | endif
 augroup END
 " }}}
 

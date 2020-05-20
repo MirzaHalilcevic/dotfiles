@@ -1,39 +1,27 @@
-# docker containers
-set PATH $HOME/dev_environment/dev-container $HOME/dev_environment/release-container $PATH
 set PATH $HOME/dev_environment_ubuntu/dev-container-ubuntu $PATH
 
-# editor
-set EDITOR nvim
+alias rm="~/gitstuff/careful_rm/careful_rm.py"
+alias lc="colorls -l --sd"
 
-# bobthefish
-set -g theme_display_docker_machine yes
-set -g theme_date_format "+%a %H:%M:%S"
-set -g theme_date_timezone Europe/Sarajevo
-set -g theme_nerd_fonts no
-set -g theme_title_display_process yes
-set -g theme_display_jobs_verbose yes
-set -g theme_use_abbreviated_branch_name yes
-set -g theme_newline_cursor yes
-set -g theme_newline_prompt '↪ '
-set -g theme_color_scheme base16-dark
+abbr -a -g ovpn sudo openvpn ~/tz.ovpn
+abbr -a -g gmom git merge origin/master
+abbr -a -g gmod git merge origin/development
+abbr -a -g gcsm git commit -v -s -m
 
-# fzf
-source $OMF_CONFIG/base16-default-dark.fish
+if test -f /home/mirza/.autojump/share/autojump/autojump.fish; . /home/mirza/.autojump/share/autojump/autojump.fish; end
 
-set -U FZF_DEFAULT_OPTS $FZF_DEFAULT_OPTS"
+set -U FZF_DEFAULT_OPTS "
   --height=100
   --layout=default
-  --prompt='↪ '
-  --color=bg+:-1
+  --prompt='﬌ '
   --preview='bat --color=always {-1}'
   --preview-window=up
 "
-set -U FZF_DEFAULT_COMMAND "
-  rg --files --hidden --no-ignore-vcs
+set -U FZF_DEFAULT_OPTS $FZF_DEFAULT_OPTS"
+  --color=dark
+  --color=fg:-1,bg:-1,hl:#c678dd,fg+:#ffffff,bg+:-1,hl+:#d858fe
+  --color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef
 "
-
-# colorls
-alias ls="$HOME/.gem/ruby/2.7.0/gems/colorls-1.3.3/exe/colorls"
-
-# git
-abbr -a -g gcsm git commit -s -m
+set -U FZF_DEFAULT_COMMAND "
+  rg --files --glob '!.git/*' --hidden --no-ignore-vcs
+"

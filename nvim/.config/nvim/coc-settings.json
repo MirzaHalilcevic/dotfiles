@@ -2,15 +2,15 @@
   "languageserver": {
     "ccls": {
       "command": "ccls",
-      "filetypes": ["c", "cpp"],
+      "filetypes": ["c", "cpp", "cuda"],
       "rootPatterns": [".ccls-root", "compile_commands.json"],
       "initializationOptions": {
         "cache": {
-          "directory": "/home/mirzah/ramdisk/ccls-cache"
+          "directory": "/home/mirza/ramdisk/ccls-cache"
         },
         "index": {
           "initialBlacklist": ["."],
-          "threads": 4
+          "threads": 6
         }
       }
     }
@@ -23,11 +23,16 @@
   "diagnostic.infoSign": "",
   "diagnostic.hintSign": "",
   "cSpell.userWords": [
+    "Pimpl",
+    "Sdma",
     "Startify",
     "ccls",
     "chromatica",
+    "cuda",
     "fswitch",
     "isystem",
+    "llvm",
+    "mirza",
     "mirzah",
     "ramdisk"
   ]
