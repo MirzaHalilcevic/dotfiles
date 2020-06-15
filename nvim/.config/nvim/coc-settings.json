@@ -9,8 +9,7 @@
           "directory": "/home/mirza/ramdisk/ccls-cache"
         },
         "index": {
-          "initialBlacklist": ["."],
-          "threads": 6
+          "threads": 4
         }
       }
     }
@@ -23,6 +22,7 @@
   "diagnostic.infoSign": "",
   "diagnostic.hintSign": "",
   "cSpell.userWords": [
+    "Halilcevic",
     "Pimpl",
     "Sdma",
     "Startify",

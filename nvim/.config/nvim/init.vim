@@ -133,7 +133,7 @@ let g:cpp_concepts_highlight = 1
 " }}}
 " fzf.vim {{{
 let g:fzf_preview_window = ''
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7 } }
+let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 let g:fzf_colors = {
       \ 'fg':      ['fg', 'Normal'],
       \ 'bg':      ['bg', 'Normal'],
@@ -172,6 +172,7 @@ let g:rainbow#blacklist = []
 " vim-startify {{{
 let g:startify_change_to_dir = 0
 let g:startify_change_to_vcs_root = 1
+let g:startify_custom_header = ''
 " }}}
 " }}}
 " Options {{{
