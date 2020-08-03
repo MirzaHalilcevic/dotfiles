@@ -179,7 +179,7 @@ let g:startify_custom_header = ''
 set autoindent " automatically indnet next line
 set background=dark " use dark color scheme variant
 "set cmdheight=2 " make the command region 2 lines high
-"set colorcolumn=81 " display vertical ruler at 81st column
+set colorcolumn=81 " display vertical ruler at 81st column
 set cursorline " highlight current line
 set expandtab shiftwidth=2 softtabstop=2 " make tabs and indents 2 spaces wide
 set hidden " hide buffers with unsaved changes
@@ -342,9 +342,6 @@ augroup Autocmds
   " Jump to the last position when reopening a file
   autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line('$')
         \ | execute "normal! g'\"" | endif
-
-  " Highlight 81st column for these file types
-  autocmd FileType vim,c,cpp,json setlocal colorcolumn=81
 
   " Set comment strings
   autocmd FileType c,cpp setlocal commentstring=//\ %s
