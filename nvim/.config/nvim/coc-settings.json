@@ -1,4 +1,13 @@
 {
+  "codeLens.enable": true,
+  "codeLens.separator": "",
+
+  "diagnostic.enableHighlightLineNumber": false,
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": "",
+
   "languageserver": {
     "ccls": {
       "command": "ccls",
@@ -6,21 +15,21 @@
       "rootPatterns": [".ccls-root", "compile_commands.json"],
       "initializationOptions": {
         "cache": {
-          "directory": "/home/mirza/ramdisk/ccls-cache"
+          "directory": "/home/mirza/.ccls-cache"
         },
         "index": {
           "threads": 4
+        },
+        "highlight": {
+          "lsRanges": true
         }
       }
     }
   },
-  "codeLens.enable": true,
-  "codeLens.separator": "",
-  "diagnostic.enableHighlightLineNumber": false,
-  "diagnostic.errorSign": "",
-  "diagnostic.warningSign": "",
-  "diagnostic.infoSign": "",
-  "diagnostic.hintSign": "",
+
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+
   "cSpell.userWords": [
     "Halilcevic",
     "Pimpl",
@@ -28,12 +37,20 @@
     "Startify",
     "ccls",
     "chromatica",
+    "cmake",
     "cuda",
+    "fakeit",
     "fswitch",
+    "gmock",
+    "gtest",
     "isystem",
     "llvm",
     "mirza",
     "mirzah",
-    "ramdisk"
+    "nlohmann",
+    "pthread",
+    "ramdisk",
+    "spdlog",
+    "tzdata"
   ]
 }
