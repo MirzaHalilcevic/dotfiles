@@ -49,6 +49,7 @@
     "mirzah",
     "nlohmann",
     "pthread",
+    "pylint",
     "ramdisk",
     "spdlog",
     "tzdata"

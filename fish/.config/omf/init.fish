@@ -1,8 +1,7 @@
 set PATH $HOME/dev_environment_ubuntu/dev-container-ubuntu $PATH
 
 # aliases
-alias lc="colorls -l --sd"
-alias rm="~/gitstuff/careful_rm/careful_rm.py"
+alias rm="$HOME/gitstuff/careful_rm/careful_rm.py"
 
 # abbreviatons
 abbr -a -g gcsm git commit -v -s -m
@@ -11,8 +10,9 @@ abbr -a -g gmom git merge origin/master
 abbr -a -g ovpn sudo openvpn ~/tz.ovpn
 
 # autojump
-if test -f /home/mirza/.autojump/share/autojump/autojump.fish;
-  . /home/mirza/.autojump/share/autojump/autojump.fish;
+set --local AUTOJUMP_PATH /usr/share/autojump/autojump.fish
+if test -e $AUTOJUMP_PATH
+    source $AUTOJUMP_PATH
 end
 
 # fzf
